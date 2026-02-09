@@ -341,7 +341,7 @@
                             style="width: 96px; height: 96px; filter: invert(1); margin-bottom: 2rem;">
                     </div>
                     <div style="margin-bottom: 2rem;">
-                        <a href="https://github.com/dill-lk/YAKA-UI" target="_blank" class="btn-primary"
+                        <a href="https://github.com/dill-lk/YAKA-UI" target="_blank" class="btn-primary" data-magnetic
                             style="padding: 0.8rem 1.5rem; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path
@@ -900,6 +900,11 @@
                                 <button class="btn-secondary">Secondary</button>
                                 <button class="btn-outline">Outline</button>
                             </div>
+                            <div style="display:flex; flex-wrap:wrap; gap:12px; margin-top:20px;">
+                                <span class="badge badge-soft">Neutral</span>
+                                <span class="badge badge-outline">Outline</span>
+                                <span class="badge badge-success">Success</span>
+                            </div>
                         </div>
                     </div>
                     <div class="code-block">
@@ -923,10 +928,15 @@
                             <div class="input-minimal"><input type="text" required placeholder=" "><label>Minimal
                                     Focus</label></div>
                             <div class="input-glass"><input type="text" placeholder="Glass Input"></div>
+                            <div class="input-glow"><input type="text" placeholder="Glow Input"></div>
                             <div style="display:flex; gap:20px; justify-content:center;">
                                 <label class="switch-label">
                                     <div class="switch-modern"><input type="checkbox" checked><span
                                             class="slider"></span></div>Switch
+                                </label>
+                                <label class="switch-label">
+                                    <div class="switch-modern switch-pill"><input type="checkbox" checked><span
+                                            class="slider"></span></div>Pill
                                 </label>
                             </div>
                         </div>
@@ -964,7 +974,20 @@
                         &lt;/<span class="token-tag">div</span>&gt;
                     </div>
 
-                    <h3>3. Modern Switches</h3>
+                    <h3>3. Glow Inputs</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted);">Use a soft halo for primary input focus
+                        states.</p>
+                    <div class="code-block">
+                        <span class="token-comment">&lt;!-- Glow Input --&gt;</span><br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"input-glow"</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="token-tag">input</span> <span class="token-attr">type</span>=<span
+                            class="token-val">"text"</span> <span class="token-attr">placeholder</span>=<span
+                            class="token-val">"Project name"</span>&gt;<br>
+                        &lt;/<span class="token-tag">div</span>&gt;
+                    </div>
+
+                    <h3>4. Modern Switches</h3>
                     <p style="font-size:0.9rem; color:var(--text-muted);">Pure CSS toggles with smooth pill animations
                         and size control.</p>
                     <div class="code-block">
@@ -981,9 +1004,14 @@
                         &nbsp;&nbsp;&lt;/<span class="token-tag">div</span>&gt;<br>
                         &nbsp;&nbsp;Label Text<br>
                         &lt;/<span class="token-tag">label</span>&gt;
+                        <br><br>
+                        <span class="token-comment">&lt;!-- Pill Style --&gt;</span><br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"switch-modern switch-pill"</span>&gt;...&lt;/<span
+                            class="token-tag">div</span>&gt;
                     </div>
 
-                    <h3>4. Animated Focus</h3>
+                    <h3>5. Animated Focus</h3>
                     <p style="font-size:0.9rem; color:var(--text-muted);">Vector-based interactive borders for
                         high-fidelity states.</p>
                     <div class="code-block">
@@ -1013,6 +1041,8 @@
                             <span class="badge badge-pill badge-primary">Pill</span>
                             <span class="badge badge-glass">Glass</span>
                             <span class="badge badge-glow">Glow</span>
+                            <span class="badge badge-outline">Outline</span>
+                            <span class="badge badge-soft">Soft</span>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
@@ -1040,6 +1070,12 @@
                             class="token-tag">span</span>&gt;<br>
                         &lt;<span class="token-tag">span</span> <span class="token-attr">class</span>=<span
                             class="token-val">"badge badge-glow"</span>&gt;Glow&lt;/<span
+                            class="token-tag">span</span>&gt;<br>
+                        &lt;<span class="token-tag">span</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"badge badge-outline"</span>&gt;Outline&lt;/<span
+                            class="token-tag">span</span>&gt;<br>
+                        &lt;<span class="token-tag">span</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"badge badge-soft"</span>&gt;Soft&lt;/<span
                             class="token-tag">span</span>&gt;
                     </div>
 
@@ -1068,6 +1104,10 @@
                             <img src="https://i.pravatar.cc/150?img=34" class="avatar avatar-lg avatar-squircle"
                                 alt="lg">
                             <img src="https://i.pravatar.cc/150?img=35" class="avatar avatar-lg avatar-glow" alt="glow">
+                            <div class="avatar-status">
+                                <img src="https://i.pravatar.cc/150?img=36" class="avatar avatar-lg avatar-ring"
+                                    alt="ring">
+                            </div>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
@@ -1078,7 +1118,12 @@
                         &lt;<span class="token-tag">img</span> <span class="token-attr">class</span>=<span
                             class="token-val">"avatar avatar-squircle"</span>&gt;<br>
                         &lt;<span class="token-tag">img</span> <span class="token-attr">class</span>=<span
-                            class="token-val">"avatar avatar-glow"</span>&gt;
+                            class="token-val">"avatar avatar-glow"</span>&gt;<br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"avatar-status"</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="token-tag">img</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"avatar avatar-ring"</span>&gt;<br>
+                        &lt;/<span class="token-tag">div</span>&gt;
                     </div>
 
                     <h3>2. Social Groups</h3>
@@ -1106,6 +1151,7 @@
                             style="display:flex; flex-direction:column; gap:15px; width:100%; max-width:500px; margin:0 auto;">
                             <div class="alert alert-glass">Project successfully updated.</div>
                             <div class="alert alert-minimal alert-success">Simple minimalist success message.</div>
+                            <div class="alert alert-outline alert-info">Outline info alert.</div>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
@@ -1118,6 +1164,9 @@
                             class="token-tag">div</span>&gt;<br>
                         &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
                             class="token-val">"alert alert-minimal"</span>&gt;Message&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"alert alert-outline"</span>&gt;Message&lt;/<span
                             class="token-tag">div</span>&gt;
                     </div>
 
@@ -1150,6 +1199,11 @@
                                 </div>
                             </div>
                             <div class="skeleton skeleton-rect" style="height:100px;"></div>
+                            <div class="skeleton-card">
+                                <div class="skeleton skeleton-text" style="width:60%;"></div>
+                                <div class="skeleton skeleton-text" style="width:80%;"></div>
+                                <div class="skeleton skeleton-rect" style="height:80px;"></div>
+                            </div>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
@@ -1161,6 +1215,9 @@
                             class="token-tag">div</span>&gt;<br>
                         &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
                             class="token-val">"skeleton skeleton-avatar"</span>&gt;&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"skeleton-card"</span>&gt;...&lt;/<span
                             class="token-tag">div</span>&gt;
                     </div>
                 </section>

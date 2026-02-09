@@ -1192,6 +1192,29 @@ body::-webkit-scrollbar {
     outline: none;
 }
 
+.input-glow {
+    position: relative;
+    padding: 0.9rem 1.1rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: 0 0 0 rgba(255, 60, 172, 0.0);
+    transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.input-glow input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    color: var(--text-main);
+    outline: none;
+}
+
+.input-glow:focus-within {
+    border-color: rgba(255, 60, 172, 0.6);
+    box-shadow: 0 0 24px rgba(255, 60, 172, 0.25);
+}
+
 /* Modern Switch (CSS Only) */
 .switch-modern {
     position: relative;
@@ -1255,6 +1278,14 @@ body::-webkit-scrollbar {
 
 .switch-sm input:checked+.slider:before {
     transform: translateX(20px);
+}
+
+.switch-pill .slider {
+    border-radius: 999px;
+}
+
+.switch-pill .slider:before {
+    border-radius: 999px;
 }
 
 /* Switch Overlay labels */
@@ -1367,6 +1398,12 @@ body::-webkit-scrollbar {
     border-color: var(--glass-border-rich);
 }
 
+.badge-soft {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-main);
+}
+
 .badge-dot {
     display: inline-flex;
     align-items: center;
@@ -1477,6 +1514,23 @@ body::-webkit-scrollbar {
     border: 2px solid var(--bg-dark);
 }
 
+.avatar-status {
+    position: relative;
+    display: inline-block;
+}
+
+.avatar-status::after {
+    content: '';
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+    width: 12px;
+    height: 12px;
+    background: var(--success);
+    border: 2px solid var(--bg-dark);
+    border-radius: 50%;
+}
+
 /* Alerts */
 .alert {
     padding: 1.25rem 1.5rem;
@@ -1519,6 +1573,11 @@ body::-webkit-scrollbar {
 
 .alert-info {
     border-left: 3px solid var(--info);
+}
+
+.alert-outline {
+    background: transparent;
+    border: 1px solid var(--glass-border);
 }
 
 .alert-close {
@@ -1645,6 +1704,15 @@ body::-webkit-scrollbar {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+}
+
+.skeleton-card {
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.02);
+    display: grid;
+    gap: 12px;
 }
 
 @keyframes shimmer {
