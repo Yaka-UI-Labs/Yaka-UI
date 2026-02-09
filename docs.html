@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="yaka.css">
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="image.png">
     <style>
         /* Docs specific styles */
         .docs-layout {
@@ -224,6 +224,35 @@
             background: var(--accent);
             color: white;
         }
+
+        @media (max-width: 900px) {
+            .docs-layout {
+                flex-direction: column;
+                padding-top: 70px;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                top: 0;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 2rem;
+            }
+
+            .component-section h2 {
+                font-size: 2.2rem;
+            }
+
+            .preview-box {
+                padding: 3rem 1.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -232,7 +261,7 @@
         <div class="logo">
             <a href="index.html"
                 style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:12px;">
-                <img src="favicon.png" alt="YAKA UI Logo" style="width: 48px; height: 48px; filter: invert(1);">
+                <img src="image.png" alt="YAKA UI Logo" style="width: 48px; height: 48px; filter: invert(1);">
                 <span style="font-size: 1.2rem; font-weight: 700;">YAKA UI</span>
             </a>
         </div>
@@ -294,6 +323,7 @@
             <a href="#" data-target="steps" class="sidebar-link">Step Process</a>
             <a href="#" data-target="timeline" class="sidebar-link">Timeline</a>
             <a href="#" data-target="pricing" class="sidebar-link">Pricing</a>
+            <a href="#" data-target="grid-system" class="sidebar-link">Grid System</a>
 
             <div
                 style="font-size:0.7rem; text-transform:uppercase; letter-spacing:2px; color:#666; margin:40px 0 15px; font-weight:700; padding-left:10px;">
@@ -307,7 +337,7 @@
                 <h1 class="category-header">Essentials</h1>
                 <section class="component-section">
                     <div style="margin-bottom: 3rem; text-align: left;">
-                        <img src="favicon.png" alt="YAKA UI Logo"
+                        <img src="image.png" alt="YAKA UI Logo"
                             style="width: 96px; height: 96px; filter: invert(1); margin-bottom: 2rem;">
                     </div>
                     <div style="margin-bottom: 2rem;">
@@ -777,6 +807,18 @@
                                     <p>Subtle depth.</p>
                                 </div>
                             </div>
+                            <div class="card glass-card card-neon">
+                                <div class="card-content">
+                                    <h3>Neon Card</h3>
+                                    <p>High-contrast accent.</p>
+                                </div>
+                            </div>
+                            <div class="card glass-card card-gradient">
+                                <div class="card-content">
+                                    <h3>Gradient Card</h3>
+                                    <p>Soft brand blend.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
@@ -808,6 +850,12 @@
                             class="token-tag">div</span>&gt;<br>
                         &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
                             class="token-val">"card glass-card card-soft"</span>&gt;Soft&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"card glass-card card-neon"</span>&gt;Neon&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"card glass-card card-gradient"</span>&gt;Gradient&lt;/<span
                             class="token-tag">div</span>&gt;
                     </div>
 
@@ -1507,6 +1555,78 @@
                                 <div class="pricing-price">$29</div><button class="btn-primary">Buy Now</button>
                             </div>
                         </div>
+                    </div>
+                </section>
+            </div>
+
+            <div id="grid-system" class="docs-content-wrapper">
+                <section class="component-section">
+                    <h2>Grid System</h2>
+                    <div class="preview-box">
+                        <div class="grid grid-3" style="width:100%;">
+                            <div class="card glass-card">
+                                <div class="card-content">
+                                    <h3>Column A</h3>
+                                    <p>Use <code>.grid</code> with <code>.grid-3</code>.</p>
+                                </div>
+                            </div>
+                            <div class="card glass-card">
+                                <div class="card-content">
+                                    <h3>Column B</h3>
+                                    <p>Responsive down to one column.</p>
+                                </div>
+                            </div>
+                            <div class="card glass-card">
+                                <div class="card-content">
+                                    <h3>Column C</h3>
+                                    <p>Supports fixed or auto grids.</p>
+                                </div>
+                            </div>
+                            <div class="card glass-card grid-span-2">
+                                <div class="card-content">
+                                    <h3>Span 2</h3>
+                                    <p>Use <code>.grid-span-2</code> to span columns.</p>
+                                </div>
+                            </div>
+                            <div class="card glass-card">
+                                <div class="card-content">
+                                    <h3>Column D</h3>
+                                    <p>Auto-fit available space.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
+                    <p>Powerful layout utilities for dashboards, feature grids, and marketing sections with responsive
+                        behavior baked in.</p>
+
+                    <h3>Basic Usage</h3>
+                    <div class="code-block">
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"grid grid-3"</span>&gt;<br>
+                        &nbsp;&nbsp;... items ...<br>
+                        &lt;/<span class="token-tag">div</span>&gt;
+                    </div>
+
+                    <h3>Auto-Fit Layout</h3>
+                    <div class="code-block">
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"grid grid-auto"</span>&gt;<br>
+                        &nbsp;&nbsp;... cards ...<br>
+                        &lt;/<span class="token-tag">div</span>&gt;
+                    </div>
+
+                    <h3>Span Columns</h3>
+                    <div class="code-block">
+                        &lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"grid grid-4"</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"card glass-card grid-span-2"</span>&gt;Wide&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &nbsp;&nbsp;&lt;<span class="token-tag">div</span> <span class="token-attr">class</span>=<span
+                            class="token-val">"card glass-card"</span>&gt;Item&lt;/<span
+                            class="token-tag">div</span>&gt;<br>
+                        &lt;/<span class="token-tag">div</span>&gt;
                     </div>
                 </section>
             </div>
