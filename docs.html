@@ -309,39 +309,68 @@
                         <img src="favicon.png" alt="YAKA UI Logo"
                             style="width: 96px; height: 96px; filter: invert(1); margin-bottom: 2rem;">
                     </div>
-                    <h2>Getting Started</h2>
-                    <p>Include YAKA UI in your project via local files or CDN. Ensure GSAP is loaded for full
-                        interactivity.</p>
+                    <div style="margin-bottom: 2rem;">
+                        <a href="https://github.com/dill-lk/YAKA-UI" target="_blank" class="btn-primary"
+                            style="padding: 0.8rem 1.5rem; font-size: 0.85rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            View on GitHub
+                        </a>
+                    </div>
+                    <p style="margin-bottom: 2.5rem; color: var(--text-muted); line-height: 1.6;">YAKA UI is a
+                        project-ready library designed for production. Use our globally distributed CDN for the lowest
+                        latency or host the files locally for full control.</p>
 
-                    <h3>Installation</h3>
+
+
+                    <h3>Option 1: CDN Setup (Recommended)</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Use our globally
+                        distributed CDN for instant setup with zero configuration. Perfect for quick prototyping and
+                        production deployments.</p>
 
                     <div class="code-block" style="padding: 1rem 2rem;">
-                        <span class="token-comment">&lt;!-- Option 1: Quick CDN (UNPKG) --&gt;</span><br>
+                        <span class="token-comment">&lt;!-- jsDelivr CDN (Fast & Reliable) --&gt;</span><br>
+                        &lt;<span class="token-tag">link</span> <span class="token-attr">rel</span>=<span
+                            class="token-val">"stylesheet"</span> <span class="token-attr">href</span>=<span
+                            class="token-val">"https://cdn.jsdelivr.net/gh/dill-lk/YAKA-UI/yaka.css"</span>&gt;<br>
+                        &lt;<span class="token-tag">script</span> <span class="token-attr">src</span>=<span
+                            class="token-val">"https://cdn.jsdelivr.net/gh/dill-lk/YAKA-UI/yaka.js"</span>&gt;&lt;/<span
+                            class="token-tag">script</span>&gt;<br><br>
+
+                        <span class="token-comment">&lt;!-- Alternative: UNPKG --&gt;</span><br>
                         &lt;<span class="token-tag">link</span> <span class="token-attr">rel</span>=<span
                             class="token-val">"stylesheet"</span> <span class="token-attr">href</span>=<span
                             class="token-val">"https://unpkg.com/yaka-ui/yaka.css"</span>&gt;<br>
                         &lt;<span class="token-tag">script</span> <span class="token-attr">src</span>=<span
                             class="token-val">"https://unpkg.com/yaka-ui/yaka.js"</span>&gt;&lt;/<span
-                            class="token-tag">script</span>&gt;<br><br>
+                            class="token-tag">script</span>&gt;
+                    </div>
 
-                        <span class="token-comment">&lt;!-- Pro Tip: Get CDN links for your own repo/files
-                            --&gt;</span><br>
-                        <span class="token-comment">&lt;!-- Use unpkg.com/[package] or jsdelivr.net/gh/[user]/[repo]
-                            --&gt;</span><br><br>
+                    <h3 style="margin-top:3rem;">Option 2: Download & Local Setup</h3>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Download the files from <a
+                            href="https://github.com/dill-lk/YAKA-UI" target="_blank"
+                            style="color:var(--accent); text-decoration:none;">GitHub</a> and host them locally for full
+                        control over versioning and customization.</p>
 
-                        <span class="token-comment">&lt;!-- Option 2: Local Setup --&gt;</span><br>
+                    <div class="code-block" style="padding: 1rem 2rem;">
+                        <span class="token-comment">&lt;!-- 1. Include YAKA UI Core Files --&gt;</span><br>
                         &lt;<span class="token-tag">link</span> <span class="token-attr">rel</span>=<span
                             class="token-val">"stylesheet"</span> <span class="token-attr">href</span>=<span
                             class="token-val">"yaka.css"</span>&gt;<br>
+                        &lt;<span class="token-tag">script</span> <span class="token-attr">type</span>=<span
+                            class="token-val">"module"</span> <span class="token-attr">src</span>=<span
+                            class="token-val">"yaka.js"</span>&gt;&lt;/<span class="token-tag">script</span>&gt;<br><br>
+
+                        <span class="token-comment">&lt;!-- 2. Required Dependencies (GSAP for animations)
+                            --&gt;</span><br>
                         &lt;<span class="token-tag">script</span> <span class="token-attr">src</span>=<span
                             class="token-val">"https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"</span>&gt;&lt;/<span
                             class="token-tag">script</span>&gt;<br>
                         &lt;<span class="token-tag">script</span> <span class="token-attr">src</span>=<span
                             class="token-val">"https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"</span>&gt;&lt;/<span
-                            class="token-tag">script</span>&gt;<br>
-                        &lt;<span class="token-tag">script</span> <span class="token-attr">type</span>=<span
-                            class="token-val">"module"</span> <span class="token-attr">src</span>=<span
-                            class="token-val">"yaka.js"</span>&gt;&lt;/<span class="token-tag">script</span>&gt;
+                            class="token-tag">script</span>&gt;
                     </div>
 
                     <h3>Initialization</h3>
@@ -1055,7 +1084,8 @@
                     <div class="preview-box">
                         <div class="marquee-container">
                             <div class="marquee-content">
-                                <span>DESIGN</span><span>CODE</span><span>ANIMATE</span><span>FUTURE</span></div>
+                                <span>DESIGN</span><span>CODE</span><span>ANIMATE</span><span>FUTURE</span>
+                            </div>
                         </div>
                     </div>
                     <hr style="border:0; border-top:1px solid var(--glass-border); margin: 2rem 0;">
