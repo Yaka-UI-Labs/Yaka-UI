@@ -1,7 +1,7 @@
 # YAKA UI
 
 <div align="center">
-  <img src="favicon.png" alt="YAKA UI Logo" width="120" height="120" />
+  <img src="image.png" alt="YAKA UI Logo" width="140" height="140" />
   <h1>YAKA UI</h1>
   <p><strong>Next-Generation UI Framework powered by GSAP & SVG</strong></p>
   
@@ -14,7 +14,7 @@
   </p>
 
   ![License](https://img.shields.io/badge/license-MIT-blue.svg)
-  ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
+  ![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)
   ![GSAP](https://img.shields.io/badge/Powered%20by-GSAP-88CE02.svg)
 </div>
 
