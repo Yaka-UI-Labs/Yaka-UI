@@ -2,11 +2,11 @@ name: YAKA UI Analysis Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: "0 4 * * 1"   # weekly scan
+    - cron: "0 4 * * 1"  # weekly scan
 
 permissions:
   contents: write
@@ -43,8 +43,7 @@ jobs:
       - name: Run ESLint Auto-fix
         run: npx eslint . --fix || true
 
-
-      # Gemini AI Auto-fix with failover
+      # Gemini AI Auto-fix with failover and logging
       - name: Gemini AI Auto-fix HTML/JS
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -62,7 +61,7 @@ jobs:
             list.forEach(file => {
               const filePath = path.join(dir, file);
               const stat = fs.statSync(filePath);
-              if (stat && stat.isDirectory()) {
+              if (stat.isDirectory()) {
                 results = results.concat(getFiles(filePath, ext));
               } else if (filePath.endsWith(ext)) {
                 results.push(filePath);
@@ -74,21 +73,28 @@ jobs:
           const files = [...getFiles('.', '.html'), ...getFiles('.', '.js')];
 
           async function callGemini(model, content) {
-            const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ input: content })
-            });
-            if (!res.ok) throw new Error(`Model ${model} failed`);
-            return res.json();
+            try {
+              const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
+                method: 'POST',
+                headers: {
+                  'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ input: content })
+              });
+              if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`HTTP ${res.status}: ${text}`);
+              }
+              return res.json();
+            } catch (err) {
+              throw new Error(`Model ${model} error: ${err.message}`);
+            }
           }
 
           async function fixFile(filePath) {
             const content = fs.readFileSync(filePath, 'utf-8');
-            for (let model of models) {
+            for (const model of models) {
               try {
                 const data = await callGemini(model, content);
                 if (data.output) {
@@ -97,7 +103,7 @@ jobs:
                   return;
                 }
               } catch (e) {
-                console.log(`⚠️ ${model} failed for ${filePath}, trying next model...`);
+                console.log(`⚠️ ${e.message} — trying next model...`);
               }
             }
             console.log(`❌ All models failed for ${filePath}`);
