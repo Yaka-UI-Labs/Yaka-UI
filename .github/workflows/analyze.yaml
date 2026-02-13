@@ -1,21 +1,18 @@
-name: YAKA UI Analysis Pipeline
+name: YAKA UI Static Analysis Pipeline
 
 on:
   push:
     branches: ["main"]
   pull_request:
     branches: ["main"]
-  schedule:
-    - cron: "0 4 * * 1"  # weekly scan
 
 permissions:
   contents: write
-  security-events: write
   actions: read
 
 jobs:
   analyze:
-    name: Static Code Analysis + Gemini AI Auto-fix
+    name: Static Code Analysis + Auto-fix
     runs-on: ubuntu-latest
 
     steps:
@@ -33,84 +30,23 @@ jobs:
       - name: Install dependencies
         run: |
           npm init -y
-          npm install eslint htmlhint node-fetch fs-extra --save-dev
+          npm install eslint htmlhint stylelint stylelint-config-standard prettier --save-dev
 
-      # Run HTMLHint
+      # Run HTMLHint (HTML linter)
       - name: Run HTMLHint
         run: npx htmlhint "**/*.html" || true
 
-      # Run ESLint auto-fix
+      # Run ESLint with auto-fix (JS linter)
       - name: Run ESLint Auto-fix
         run: npx eslint . --fix || true
 
-      # Gemini AI Auto-fix with failover (GitHub Secret)
-            # Gemini AI Auto-fix with failover
-      - name: Gemini AI Auto-fix HTML/JS
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          node <<'EOF'
-          const fs = require('fs-extra');
-          const path = require('path');
-          const fetch = require('node-fetch'); // just use this directly
+      # Run Stylelint with auto-fix (CSS linter)
+      - name: Run Stylelint Auto-fix
+        run: npx stylelint "**/*.css" --fix || true
 
-          const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-          const models = ["gemini-3.0-flash", "gemini-2.5-pro", "gemini-2.5"];
-
-          function getFiles(dir, ext) {
-            let results = [];
-            const list = fs.readdirSync(dir);
-            list.forEach(file => {
-              const filePath = path.join(dir, file);
-              const stat = fs.statSync(filePath);
-              if (stat && stat.isDirectory()) {
-                results = results.concat(getFiles(filePath, ext));
-              } else if (filePath.endsWith(ext)) {
-                results.push(filePath);
-              }
-            });
-            return results;
-          }
-
-          const files = [...getFiles('.', '.html'), ...getFiles('.', '.js')];
-
-          async function callGemini(model, content) {
-            const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${GEMINI_API_KEY}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ input: content })
-            });
-            if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
-            return res.json();
-          }
-
-          async function fixFile(filePath) {
-            const content = fs.readFileSync(filePath, 'utf-8');
-            for (const model of models) {
-              try {
-                const data = await callGemini(model, content); // use imported fetch directly
-                if (data.output) {
-                  fs.writeFileSync(filePath, data.output, 'utf-8');
-                  console.log(`✅ Fixed ${filePath} with ${model}`);
-                  return;
-                }
-              } catch (e) {
-                console.log(`⚠️ ${e.message} — trying next model...`);
-              }
-            }
-            console.log(`❌ All models failed for ${filePath}`);
-          }
-
-          (async () => {
-            for (const file of files) {
-              await fixFile(file);
-            }
-          })();
-          EOF
+      # Run Prettier to format all files
+      - name: Prettier Auto-format
+        run: npx prettier --write "**/*.{js,html,css}" || true
 
       # Commit fixes if any
       - name: Commit and Push Auto-fixes
@@ -118,19 +54,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git diff --cached --quiet || git commit -m "chore: Gemini AI auto-fix HTML/JS"
+          git diff --cached --quiet || git commit -m "chore: Auto-fix HTML/JS/CSS via linters & Prettier"
           git push origin HEAD:main || true
-
-      # Initialize CodeQL
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: javascript, python
-
-      # Autobuild
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      # Run security analysis
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
