@@ -43,6 +43,7 @@ jobs:
       - name: Run ESLint Auto-fix
         run: npx eslint . --fix || true
 
+
       # Gemini AI Auto-fix with failover
       - name: Gemini AI Auto-fix HTML/JS
         env:
