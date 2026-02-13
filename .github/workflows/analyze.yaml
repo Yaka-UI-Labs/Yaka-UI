@@ -9,13 +9,13 @@ on:
     - cron: "0 4 * * 1"   # weekly scan
 
 permissions:
-  contents: read
+  contents: write
   security-events: write
   actions: read
 
 jobs:
   analyze:
-    name: Static Code Analysis
+    name: Static Code Analysis + Gemini AI Auto-fix
     runs-on: ubuntu-latest
 
     steps:
@@ -23,25 +23,100 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Setup Node (for CSS lint + tooling)
+      # Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Install linters
+      # Install dependencies
       - name: Install dependencies
         run: |
           npm init -y
-          npm install stylelint stylelint-config-standard eslint --save-dev
+          npm install eslint htmlhint node-fetch fs-extra --save-dev
 
-      # CSS Lint
-      - name: Run CSS Lint
-        run: npx stylelint "**/*.css" || true
+      # Run HTMLHint
+      - name: Run HTMLHint
+        run: npx htmlhint "**/*.html" || true
 
-      # JS Lint
-      - name: Run ESLint
-        run: npx eslint . || true
+      # Run ESLint auto-fix
+      - name: Run ESLint Auto-fix
+        run: npx eslint . --fix || true
+
+      # Gemini AI Auto-fix with failover
+      - name: Gemini AI Auto-fix HTML/JS
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          node <<'EOF'
+          const fs = require('fs-extra');
+          const path = require('path');
+          const fetch = require('node-fetch');
+
+          const models = ["gemini-3.0-flash", "gemini-2.5-pro", "gemini-2.5"];
+
+          function getFiles(dir, ext) {
+            let results = [];
+            const list = fs.readdirSync(dir);
+            list.forEach(file => {
+              const filePath = path.join(dir, file);
+              const stat = fs.statSync(filePath);
+              if (stat && stat.isDirectory()) {
+                results = results.concat(getFiles(filePath, ext));
+              } else if (filePath.endsWith(ext)) {
+                results.push(filePath);
+              }
+            });
+            return results;
+          }
+
+          const files = [...getFiles('.', '.html'), ...getFiles('.', '.js')];
+
+          async function callGemini(model, content) {
+            const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ input: content })
+            });
+            if (!res.ok) throw new Error(`Model ${model} failed`);
+            return res.json();
+          }
+
+          async function fixFile(filePath) {
+            const content = fs.readFileSync(filePath, 'utf-8');
+            for (let model of models) {
+              try {
+                const data = await callGemini(model, content);
+                if (data.output) {
+                  fs.writeFileSync(filePath, data.output, 'utf-8');
+                  console.log(`✅ Fixed ${filePath} with ${model}`);
+                  return;
+                }
+              } catch (e) {
+                console.log(`⚠️ ${model} failed for ${filePath}, trying next model...`);
+              }
+            }
+            console.log(`❌ All models failed for ${filePath}`);
+          }
+
+          (async () => {
+            for (const file of files) {
+              await fixFile(file);
+            }
+          })();
+          EOF
+
+      # Commit fixes if any
+      - name: Commit and Push Auto-fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git diff --cached --quiet || git commit -m "chore: Gemini AI auto-fix HTML/JS"
+          git push origin HEAD:main || true
 
       # Initialize CodeQL
       - name: Initialize CodeQL
@@ -49,7 +124,7 @@ jobs:
         with:
           languages: javascript, python
 
-      # Autobuild (safe for static projects)
+      # Autobuild
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
 
