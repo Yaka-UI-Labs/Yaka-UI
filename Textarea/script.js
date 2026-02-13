@@ -5,11 +5,11 @@
 
 // Entrance Animation
 window.onload = () => {
-    gsap.to(".container-box", {
-        opacity: 1,
-        y: 0,
-        startAt: { y: 20 },
-        duration: 1,
-        ease: "power3.out"
-    });
+  gsap.to(".container-box", {
+    opacity: 1,
+    y: 0,
+    startAt: { y: 20 },
+    duration: 1,
+    ease: "power3.out",
+  });
 };
