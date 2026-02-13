@@ -1,0 +1,58 @@
+name: YAKA UI Analysis Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: "0 4 * * 1"   # weekly scan
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  analyze:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repository
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Setup Node (for CSS lint + tooling)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install linters
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install stylelint stylelint-config-standard eslint --save-dev
+
+      # CSS Lint
+      - name: Run CSS Lint
+        run: npx stylelint "**/*.css" || true
+
+      # JS Lint
+      - name: Run ESLint
+        run: npx eslint . || true
+
+      # Initialize CodeQL
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript, python
+
+      # Autobuild (safe for static projects)
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      # Run security analysis
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
