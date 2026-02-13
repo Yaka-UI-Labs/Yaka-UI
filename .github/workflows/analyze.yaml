@@ -43,7 +43,7 @@ jobs:
       - name: Run ESLint Auto-fix
         run: npx eslint . --fix || true
 
-      # Gemini AI Auto-fix with failover and logging
+      # Gemini AI Auto-fix with failover (GitHub Secret)
       - name: Gemini AI Auto-fix HTML/JS
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -52,6 +52,9 @@ jobs:
           const fs = require('fs-extra');
           const path = require('path');
           const fetch = require('node-fetch');
+          global.fetch = fetch; // Fix for "fetch is not a function"
+
+          const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
           const models = ["gemini-3.0-flash", "gemini-2.5-pro", "gemini-2.5"];
 
@@ -61,7 +64,7 @@ jobs:
             list.forEach(file => {
               const filePath = path.join(dir, file);
               const stat = fs.statSync(filePath);
-              if (stat.isDirectory()) {
+              if (stat && stat.isDirectory()) {
                 results = results.concat(getFiles(filePath, ext));
               } else if (filePath.endsWith(ext)) {
                 results.push(filePath);
@@ -73,23 +76,16 @@ jobs:
           const files = [...getFiles('.', '.html'), ...getFiles('.', '.js')];
 
           async function callGemini(model, content) {
-            try {
-              const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
-                method: 'POST',
-                headers: {
-                  'Authorization': `Bearer ${process.env.GEMINI_API_KEY}`,
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ input: content })
-              });
-              if (!res.ok) {
-                const text = await res.text();
-                throw new Error(`HTTP ${res.status}: ${text}`);
-              }
-              return res.json();
-            } catch (err) {
-              throw new Error(`Model ${model} error: ${err.message}`);
-            }
+            const res = await fetch(`https://api.gemini.ai/v1/code-fix?model=${model}`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${GEMINI_API_KEY}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ input: content })
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+            return res.json();
           }
 
           async function fixFile(filePath) {
