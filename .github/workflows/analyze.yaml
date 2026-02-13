@@ -44,6 +44,7 @@ jobs:
         run: npx eslint . --fix || true
 
       # Gemini AI Auto-fix with failover (GitHub Secret)
+            # Gemini AI Auto-fix with failover
       - name: Gemini AI Auto-fix HTML/JS
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -51,8 +52,7 @@ jobs:
           node <<'EOF'
           const fs = require('fs-extra');
           const path = require('path');
-          const fetch = require('node-fetch');
-          global.fetch = fetch; // Fix for "fetch is not a function"
+          const fetch = require('node-fetch'); // just use this directly
 
           const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
@@ -92,7 +92,7 @@ jobs:
             const content = fs.readFileSync(filePath, 'utf-8');
             for (const model of models) {
               try {
-                const data = await callGemini(model, content);
+                const data = await callGemini(model, content); // use imported fetch directly
                 if (data.output) {
                   fs.writeFileSync(filePath, data.output, 'utf-8');
                   console.log(`✅ Fixed ${filePath} with ${model}`);
